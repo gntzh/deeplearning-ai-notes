@@ -1,0 +1,52 @@
+\RequirePackage{expl3, xparse, l3keys2e}
+%<@@=vPkg>
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesExplFile{}{}{}{}
+
+\PassOptionsToPackage{no-math}{fontspec}
+\RequirePackage{fontspec}
+\RequirePackage{graphicx}
+\RequirePackage{array}
+\RequirePackage{enumitem}
+\RequirePackage{mathtools}
+\RequirePackage{unicode-math}
+\RequirePackage{geometry}
+\RequirePackage[many]{tcolorbox}
+% Other Packages
+\RequirePackage{biblatex}
+\RequirePackage{makeidx}
+%% nerd font begin
+\newfontface\nerdfont{CaskaydiaCove~Nerd~Font}
+\NewDocumentCommand{\nf}{m o}{{\IfNoValueF{#2}{\color{#2}}\nerdfont #1}}
+%% nerd font end
+%% minted begin
+\RequirePackage{minted}
+\tcbuselibrary{minted}
+%% minted end
+%% box begin
+\NewTColorBox{block}{O{success} O{} O{}}{
+  enhanced~jigsaw,
+  breakable,
+  sharp~corners,
+  boxrule=0em,
+  right=1em,
+  left=1em,
+  toptitle=0.8em,
+  title=#2,
+  fonttitle={\bfseries},
+  coltitle=#1,
+  colback=#1!10,
+  colbacktitle=#1!10,
+  borderline~west={0.5em}{0.5em}{#1},
+  #3
+}
+%% box end
+\def\remarkname{注}
+\NewDocumentEnvironment{remark}{o}{
+  \noindent{\bfseries\upshape
+    \color{third}\remarkname\;
+    \IfValueT{#1}{#1\;}
+  }\itshape
+}{\par}
+  
+%<@@=>

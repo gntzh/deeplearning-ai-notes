@@ -1,0 +1,47 @@
+\special{dvipdfmx:config z 0}
+\special{dvipdfmx:config C 0x40}
+\special{pdf:minorversion 7}
+\documentclass{book}
+\input{./preamble.tex}
+\title{吴恩达深度学习入门课程笔记}
+\author{Shoor}
+\date{\today}
+
+\makeindex
+\begin{document}
+\maketitle
+\tableofcontents
+\part{神经网络和深度学习}
+% Neural Networks and Deep Learning
+\subfile{./content/神经网络和深度学习/深度学习引言.tex}
+\subfile{./content/神经网络和深度学习/神经网络的编程基础.tex}
+\subfile{./content/神经网络和深度学习/浅层神经网络.tex}
+\subfile{./content/神经网络和深度学习/深层神经网络.tex}
+
+\part{优化神经网络：超参数调试、正则化以及优化}
+% Improving Deep Neural Networks:Hyperparameter tuning, Regularization and Optimization
+\subfile{./content/优化神经网络/深度学习的实践层面.tex}
+\subfile{./content/优化神经网络/优化算法.tex}
+\subfile{./content/优化神经网络/超参数调优.tex}
+
+\part{结构化机器学习项目}
+% Structuring Machine Learning Projects
+\subfile{./content/结构化机器学习项目/机器学习策略1.tex}
+\subfile{./content/结构化机器学习项目/机器学习策略2.tex}
+
+\part{卷积神经网络}
+% Convolutional Neural Networks
+\subfile{./content/卷积神经网络/卷积神经网络.tex}
+\subfile{./content/卷积神经网络/深度卷积网络：实例探究.tex}
+% \subfile{./}
+% \subfile{./}
+
+\part{序列模型}
+% Sequence Models
+% \subfile{./}
+% \subfile{./}
+% \subfile{./}
+
+\printbibliography
+\printindex
+\end{document}

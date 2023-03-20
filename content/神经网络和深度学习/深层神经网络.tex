@@ -1,0 +1,65 @@
+\documentclass[../../main.tex]{subfiles}
+\begin{document}
+\chapter{深层神经网络}
+% Deep Neural Networks
+\section{L层深层神经网络}
+% Deep L-layer neural network
+规定一些符号：
+\begin{itemize}
+    \item \(L\)表示神经网络的层数（不含输入层）
+    \item \(n^{[l]}\)表示第\(l\)层激活单元的个数
+    \item \(b^{[l]}\)表示第\(l\)层的偏置矩阵
+    \item \(W^{[l]}\)表示第\(l\)层的权重矩阵
+    \item \(g^{[l]}\)表示第\(l\)层的激活函数
+    \item \(z^{[l]}\)表示第\(l\)层的输入
+    \item \(a^{[l]}\)表示第\(l\)层的输出
+    \item \(\hat{y}\)表示预测，\(\hat{y}=a^{[l]}\)
+\end{itemize}
+\section{前向传播和反向传播}
+% Forward and backward propagation
+
+\section{深层网络中的前向传播}
+% Forward propagation in a Deep Network
+
+\section{核对矩阵的维数}
+% Getting your matrix dimensions right
+
+\section{为什么使用深层表示？}
+% Why deep representations?
+可以从两个方面理解：
+\begin{enumerate}
+    \item 深层网络从小到大挖掘特征组合，从而发挥作用。\\更多的层数才能挖掘到更多、更整体的组合
+    \item 深层网络类似电路，自然电路门越多越强大。\\而且层数太小所需要的元件（神经元）更多，例如计算n个数的异或，如果仅有一层则需要\(2^{n-1}\)个神经元，如果使用深度网络，需要\(\log(n)\)层深度。
+\end{enumerate}
+\section{搭建神经网络块}
+% Building blocks of deep neural networks
+
+\section{参数VS超参数}
+% Parameters vs Hyper Parameters
+简言之，\textbf{参数}是根据数据训练得出的，\textbf{超参数}是手动设置或启发式算法设置的。
+
+参数具有这些特点：
+\begin{itemize}
+    \item 模型在进行预测时需要它们。
+    \item 它们的值定义了可使用的模型。
+    \item 它们是从数据估计或获悉的。
+    \item 它们通常不由编程者手动设置。
+    \item 它们通常被保存为学习模型的一部分。
+\end{itemize}
+常见的参数有NN中的权重、SVM中的支持向量、线性回归或逻辑回归中的系数。
+
+超参数具有这些特点：
+\begin{itemize}
+    \item 它们通常用于帮助估计模型参数。
+    \item 它们通常由人工指定。
+    \item 它们可以使用启发式设置。
+    \item 它们经常被调整为给定的预测建模问题。
+\end{itemize}
+常见的超参数有学习速率、SGD中的momentum、正则化参数。
+
+我们无法知道给定问题的超参数的最佳值，只能用经验法则和通过反复试验来寻找最佳值。
+
+\section{这和大脑一定有关吗？}
+% What does this have to do with the brain?
+深度学习或者说神经网络确实来自对大脑的模仿，但仍与大脑关联不大，人类大脑是如此强大和复杂，目前连单个神经元也没有搞清楚。
+\end{document}

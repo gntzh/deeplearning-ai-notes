@@ -1,0 +1,73 @@
+\documentclass[../../main.tex]{subfiles}
+\begin{document}
+\chapter{深度学习介绍}
+% Introduction to Deep Learning
+
+\section{欢迎}
+一共五门课：
+\begin{enumerate}
+    \item 建立深度神经网络\\根据传统，以猫作为对象识别。
+    \item 优化神经网络\\学习超参数调整、正则化、诊断偏差和方差以及一些高级优化算法。
+    \item 结构化机器学习工程
+    \item 卷积神经网络CNN
+    \item 序列模型
+\end{enumerate}
+
+\section{什么是神经网络}
+神经网络使用复杂的组合和较多的数据挖掘输入和输出间的映射。
+
+\section{神经网络的监督学习}
+神经网络大致可以分类一下四类：
+\begin{itemize}
+    \item 标准神经网络 Standard NN\\对于简单的神经网络，相对标准一些，如预测房产价格和广告是否会点击。
+    \item 卷积神经网络 CNN (Convolutional Neural Network)\\对于图像应用，常使用CNN。
+    \item 循环神经网络 RNN (Recurrent Neural Network)\\对于序列数据，比如音频、自然语言，常使用RNN。
+    \item 混合神经网络\\对于更复杂的应用，常常混用CNN和RNN。
+\end{itemize}
+标准神经网络常常长这个样子：
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[shorten >= 1pt,->]
+        \node [neuron] (o-1) at (16mm, -2cm){};
+        \draw (o-1) -- ++(10mm, 0) node[right]{\(y\)};
+        \foreach \i in {1,2,3}{
+            \node [neuron] (h-\i) at (0, -\i cm){};
+            \draw (h-\i) -- (o-1);
+        }
+        \foreach \i in {1,...,4}{
+            \node [yshift=0.5cm] (i-\i) at (-20mm, -\i){\(x_\i\)};
+            \foreach \j in {1,2,3}
+                \draw (i-\i.east) -- (h-\j);
+        }
+    \end{tikzpicture}
+    \caption{Standard NN}
+\end{figure}
+% TODO 添加RNN和CNN的示意图
+神经网络处理的数据可以分类两类：
+\begin{itemize}
+    \item 结构化数据库 Structured Data。
+    \item 非结构化数据库 Unstructured Data，比如图像、音频、自然语言。
+\end{itemize}
+显然在今天大数据库的时代，非结构化数据库更多。
+\section{为什么深度学习会兴起？}
+% Why is Deep Learning taking off?
+深度学习和神经网络之前的基础技术理念已经存在大概几十年了，但直到今天才兴起，这主要在于\textbf{规模}，包括神经网络的规模和数据库的规模（准确的说是标记过的数据 labeled data）。在训练样本较少的情况下神经网络的表现相比其他传统的机器学习算法，如SVM，并不好，而且也不稳定；当训练样本增大到一定规模时，传统算法的性能没有明显的提高，而神经网络，尤其是大规模的神经网络可以稳定的超过传统的算法。
+
+总的来说，就是\textbf{规模驱动深度学习发展}，这就需要更强的算力。事实上，近些年的算法改进主要是为了提高运算效率，如使用ReLU替换Sigmoid，这是因为深度学习理论的可解释性差，研究方式依赖于不断的试验。
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[
+        vArrow/.style={
+            cyan!30,
+            line width=2mm,
+            -{Triangle[cyan!80]},
+        }
+    ]
+        \draw (90:2) node(i) {Idea} (-30:2) node (c) {Code} (-150:2) node (e) {Experiment};
+        \draw[vArrow] (75:2) arc (75:-25:2cm);
+        \draw[vArrow] (-40:2) arc (-40:-145:2cm);
+        \draw[vArrow] (-160:2) arc (-160:-255:2cm);
+    \end{tikzpicture}
+\end{figure}
+
+\end{document}

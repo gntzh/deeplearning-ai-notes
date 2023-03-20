@@ -1,0 +1,101 @@
+\documentclass[../../main.tex]{subfiles}
+\begin{document}
+\chapter{优化算法}
+% Optimization algorithms
+
+\section{Mini-Batch 梯度下降}
+% Mini-Batch gradient descent
+
+样本量很大时，一次性计算可能有问题，这时可以将样本随机分成若干 mini-batch，\(X^{\{t\}}, y^{\{t\}}\)表示第\(t\)个 mini-batch。当 batch size 取值不同时：
+\begin{itemize}
+    \item m：Batch Gradient Descent，最为稳定，但样本量大时不可用。
+    \item 1：Stochastic Gradient Descent，噪音太大，波动前进，基本不会收敛。
+    \item (1, m)：Mini-Batch Gradient Descent。
+\end{itemize}
+\begin{remark}
+    现在一般提起SGD是指Mini-Batch Gradient Descent。
+\end{remark}
+
+
+\section{理解 Mini-Batch 梯度下降}
+% Understanding mini-batch gradient descent
+
+\section{指数加权平均数}
+% Exponentially weighted averages
+% TODO 补充，指数加权平均数的推导
+对于有序数据，比如每日气温，如果想要不保存前几日的气温而求前几日与今日的平均气温，可以使用\textbf{指数加权平均数 Exponentially weighted averages}：
+\[v_t = β*v_{t-1} + (1-β)θ_t ≈ (1-β)\sum\limits_{i=t + 1 - \frac{1}{1-β}}^{t}v_i\]
+比如\(β=0.1, \frac{1}{1-β}=10\)，则可近似计算前10日的平均气温。
+
+
+\section{理解指数加权平均数}
+% Understanding exponentially weighted averages
+
+\section{指数加权平均的偏差修正}
+% Bias correction in exponentially weighted averages
+因为设\(v_0 = 0\)，导致前期偏差过大，可以使用\(\frac{v_t}{1-β^t}\)来代替，以修正偏差。
+
+\section{动量梯度下降法}
+% Gradient descent with Momentum
+使用指数加权平均数可以简单的保存平均梯度，用以修正当前的梯度：
+\begin{align*}
+     & v_t = βv_{t-1} + (1-β)g_{t} \\
+     & p_t = p_{t-1} - αv_t
+\end{align*}
+其中，\(v_t\)表示平均梯度，即 Momentum。采用动量 Momentum 后，在某一维度上，当梯度方向不变时，更新速度变快，当梯度方向有所改变时，更新速度变慢，从而加快收敛速度，减少震荡。平均梯度就类似动量，当前梯度类似冲量。优点：
+\begin{itemize}
+    \item 梯度更新除了受同一学习率影响外，还有每个参数各自的动量。
+    \item 在梯度改变方向的时候减少震荡，在梯度方向一致时加速收敛。
+    \item 可能能够跳出局部最优陷阱。
+\end{itemize}
+
+另外还有其他形式，比如PyTorch采用的：
+\begin{align*}
+     & v_t = βv_{t-1} + g_{t} \\
+     & p_t = p_{t-1} - αv_t
+\end{align*}
+其他框架采用的：
+\begin{align*}
+     & v_t = βv_{t-1} + αg_{t} \\
+     & p_t = p_{t-1} - v_t
+\end{align*}
+
+\begin{remark}
+    Momentum 的取值可以考虑0.9，这是一个 Robust Value。
+\end{remark}
+
+这里有一篇文章 \href{https://distill.pub/2017/momentum/}{Why Momentum Really Works}，解释了动量梯度下降法为什么有效，还做了可视化。
+% TODO 补充，Nesterov Accelerated Gradient（NAG）
+
+\section{RMSprop}
+% RMSprop
+\textbf{RMSprop} 全称 root mean square prop，相比 Momentum 使用的是二阶矩：
+\begin{align*}
+     & S_t = βv_{t-1} + (1-β)g_{t}^2        \\
+     & p_t = p_{t-1} - \frac{α}{\sqrt{S_t}}
+\end{align*}
+% TODO
+
+\section{Adam 优化算法}
+% Adam optimization algorithm
+\textbf{Adam}，全称Adaptive Moment Estimation，结合了 Momentum 和 RMSprop，并做了偏差修正：
+\begin{align*}
+     & v_t = β_1v_{t-1} + (1-β_1)g_{t}                                     \\
+     & S_t = β_2v_{t-1} + (1-β_2)g_{t}^2                                   \\
+     & v_t^{corrected} = \frac{v_t}{1-β_1^t}                               \\
+     & S_t^{corrected} = \frac{S_t}{1-β_2^t}                               \\
+     & p_t = p_{t-1} - α\frac{v_t^{corrected}}{\sqrt{S_t^{corrected}} + ε}
+\end{align*}
+Adam 中有四个超参数，其中学习率\(α\)是经常需要调试的，\(ε\)不会影响算法表现，使用默认值\(10^{-8}\)即可，\(β_1\)和\(β_2\)默认值为\(0.9, 0.999\)。
+
+\section{学习率衰减}
+% Learning rate decay
+随着迭代次数增加，学习率应该衰减，尤其在最小值附近，如果学习率不变，会大幅度在最小值附近摆动。
+
+有时还需要手动调整学习率。
+
+\section{局部最优的问题}
+% The problem of local optima
+在高维空间中，不太可能困在极差的局部最优中，更可能遭遇平稳段 plateau 或被困在鞍点 saddle point，这使得学习十分缓慢，只能靠优化算法或手动调整相关参数，（更快）走出平稳段
+
+\end{document}

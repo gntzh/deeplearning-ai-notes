@@ -1,0 +1,70 @@
+\documentclass[../../main.tex]{subfiles}
+\begin{document}
+\chapter{超参数调优}
+% Hyper parameter tuning
+
+\section{调试处理}
+% Tuning process
+超参数的调试需要大规模的实验，通常在参数范围内取随机值与组合，在效果较好的区域再进行更密集的随机值与组合，由粗糙到精细。
+
+
+但超参数的随机要选择合适的范围，不是所有的超参数都可以直接使用均匀分布来随机，网络层数、隐藏单元个数之类的超参数可以直接随机，但学习率这样的超参数就不该直接随机了，因为在不同数量级，学习率的敏感度是不一样的，比如在\((0.0001, 0.1)\)明显更敏感，但如果直接随机，在\((0.0001, 0.1)\)范围内的个数只有\((0.1, 1)\)的\(\frac{1}{9}\)，这时可以使用对数标尺搜索超参数。
+
+比如学习率的取值范围时\(10^{-4}, 1\)，那么取10的对数，在\(-4,0\)间使用均匀分布来随机出\(r\)，然后\(α=10^{r}\)。这样在不同数量级内的取值数量是一致的。
+
+类似的还有 Momentum中的超参数\(β\)，取值范围是\(0.9, 0.9999\)，可以先转换成\(1-β\)，此时取值范围是\((10^{-4}, 10^{-1})\)，再转化为\(-4, -1\)间的均匀随机。
+
+\section{为超参数选择合适的范围}
+% Using an appropriate scale to pick hyper parameters）
+
+\section{超参数调试的实践：Pandas VS Caviar}
+% Hyper parameters tuning in practice: Pandas vs. Caviar
+
+\section{归一化网络的激活函数}
+% Normalizing activations in a network
+归一化输入特征可以加快学习过程，如果对每一层都做归一化，也可以加快学习过程，在深层网络中更是作用重大。这一方法称为 Batch Normalization，算法如下：
+
+\begin{algorithm}[H]
+    \KwIn{\(B={z^{(1)}, ⋯, z^{(m)}}\); \(γ, β\)}
+    \KwOut{\(\tilde{z}^{(i)} = \mathrm{BN}_{γ, β}(z_i)\)}
+    \(μ_B← \frac{1}{m}\sum\limits_{i=1}^{m}z^{(i)}\)\;
+    \(σ_B^2← \frac{1}{m}\sum\limits_{i=1}^{m}(z^{(i)} - μ_B)^2\)\;
+    \(z_{norm}^{(i)} ← \frac{z^{(i)}-μ_B}{\sqrt{σ_B^2+ε}}\)\;
+    \(\tilde{z}^{(i)} ← γz_{norm}^{(i)} + β\); \tcp{scale and shift}
+\end{algorithm}
+\begin{enumerate}
+    \item 输入为数量为 m 的 mini-batch 在某一层线性组合输入后的\(z\)。
+    \item \(γ, β\)是可训练参数，参与反向传播。
+    \item 不仅有归一化，还有 scale and shift。
+    \item \(ε\)除了防止分母为零的情况，还为了增加数值稳定性。
+\end{enumerate}
+
+归一化除了能减少数据的发散程度，加速神经网络训练外，缓解梯度饱和问题，sigmoid和tanh这类函数在自变量很大、很小时梯度与输出都不灵敏了，而归一化能缓解这个问题。
+
+可训练的 scale and shift可以让神经网络自己学习、调整前面的归一化。
+
+BN还可能减少了前后层间的依赖，缓解了协变量偏移问题 Covariate shift。简单说 Covariate shift 问题就是后层网络对前层网络依赖严重，在前层参数更新时，后层网络并不能很好地适应此时的前层网络，而BN能限制前层参数更新时对数值分布的影响，使这些值变得更稳定，后层网络更独立。
+
+另外，BN还有一个轻微正则化的效果，因为使用的是mini-batch的\(u, σ^2\)，而不是在整个数据集的，再加上缩放和偏移，这些噪声有正则化的效果。但是不应该把BN当作正则化手段，因为batch size较小的时候，正则化作用强，但同样因为\(u, σ^2\)的噪音大，导致BN的效果差（影响参数的学习），batch size调大点，正则化效果又弱了。
+
+对z的BN使得常熟\(b\)没有意义，\(b\)是在调节均值，归一化使得\(b\)的调节失效了，可训练的\(β\)可以调节均值。
+
+\section{将 Batch Norm 拟合进神经网络}
+% Fitting Batch Norm into a neural network
+
+\section{测试时的 Batch Norm}
+% Batch Norm at test time
+预测时，\(u, σ^2\)应该使用训练集所有批次的，或者训练集批次的指数加权平均值。
+
+\section{Softmax 回归}
+% Softmax regression
+
+\section{训练一个 Softmax 分类器}
+% Training a Softmax classifier
+
+\section{深度学习框架}
+% Deep Learning frameworks
+
+\section{TensorFlow}
+
+\end{document}

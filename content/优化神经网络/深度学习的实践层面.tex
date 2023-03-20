@@ -1,0 +1,99 @@
+\documentclass[../../main.tex]{subfiles}
+\begin{document}
+\chapter{深度学习的实践层面}
+% Practical aspects of Deep Learning
+
+\section{训练，验证，测试集}
+% Train / Dev / Test sets
+把样本划分为三个部分：
+\begin{enumerate}
+    \item Train set 训练集\\用于训练模型。
+    \item Hold-out cross validation set 简单交叉验证集，简称为 dev set 验证集\\用于验证模型，并作为调参的依据。
+    \item Test set 测试集\\无偏估计模型的泛化能力，但不作为调参的依据。
+\end{enumerate}
+但通常不设置test set，并且这种情况常称 dev set 为 test set，这是把实际应用当作了 test set。
+
+在小规模的数据通常按照6:2:2比例划分，如果没有test set，则7:3比例划分；大数据的情况下，则dev set和test set则占很小的比例，比如有100w个样本，则dev set、test set可能只取1w就够了。
+
+\section{偏差，方差}
+% Bias / Variance
+偏差 Bias 高表示拟合差，方差 Variance 高表示泛化差。
+% 可以通过比较Train set error和Dev set error可以感觉到偏差和方差
+% 假设最优偏差 optimal error ≈ 0
+
+\section{机器学习基础}
+% Basic Recipe for Machine Learning
+
+\section{正则化}
+% Regularization
+当高方差（过拟合）时，除了增加训练样本（包括样本分布合理），还可以考虑正则化。传统中常用的是L2 正则化，又叫做权重衰减 weight decay：
+\[
+    J(W, b) = J'(W, b) + \frac{λ}{2m}‖W‖_F^2
+\]
+其中\(‖W‖_F\)是指弗罗贝尼乌斯范数 Frobenius norm，计算是所有元素的平方和，然后开平方。
+
+还有不常用的 L1 正则化：
+\[
+    J(W, b) = J'(W, b) + \frac{λ}{2m}‖W‖_1
+\]
+其中\(‖W‖_1\)是一范数，计算是所有元素的绝对值和。L1 正则化的结果更加稀疏 sparse，L1会趋向于产生少量的特征，而其他的特征都是0，而L2会选择更多的特征，这些特征都会接近于0
+
+更常用的是随机失活 Dropout 正则化。
+
+\section{为什么正则化有利于预防过拟合呢？}
+% Why regularization reduces overfitting?
+正则
+\section{Dropout 正则化}
+% Dropout Regularization
+当一个复杂的前馈神经网络被训练在小的数据集时，容易造成过拟合。为了防止过拟合，可以通过阻止特征检测器的共同作用来提高神经网络的性能，这就是 Dropout。
+
+Dropout就是让某个神经元（实现上是按层）的激活值以一定的概率\(p\)失活，这样可以使模型泛化性更强，因为它不会太依赖某些局部的特征。
+
+Vanilla Dropout 因为随机失活了一些节点，会导致期望变小，因而有了 Inverted Dropout，失活之后再进行一次 rescale：\(\frac{1}{1-p}\)，使期望回到原来的水平。
+
+\section{理解 Dropout}
+% Understanding Dropout
+
+\section{其他正则化方法}
+% Other regularization methods
+其他正则化，或者说其他预防过拟合的方法还有：
+\begin{itemize}
+    \item Data augmentation
+    \item Early stopping
+\end{itemize}
+
+\section{归一化输入}
+% Normalizing inputs
+要注意的是，dev test要进行与train test相同的数据变换，比如使用均值和标准差进行归一化，那均值和标准差应该由train set算得，dev set也使用同样的均值和标准差。
+
+\section{梯度消失/爆炸}
+% Vanishing / Exploding gradients
+梯度消失/梯度爆炸 Vanishing / Exploding gradients 其实是同一原因，是因为梯度与网络层数成指数关系，那么在层数较多时，梯度会很大或很小，而且权重等与网络层数成指数关系的变量都可能遇到梯度消失/爆炸。
+
+另外激活函数还可能促成梯度消失，比如sigmoid函数，梯度最大不超过0.25，很容易发生梯度消失。tanh函数梯度在\((0, 1)\)之间，比sigmoid要好一些，ReLU在正数部分梯度恒等于1，解决了梯度消失、爆炸的问题。
+
+虽然梯度消失/爆炸无法彻底彻底解决，但给了我们初始化权重的思路。
+
+
+\section{神经网络的权重初始化}
+% Weight Initialization for Deep NetworksVanishing / Exploding gradients
+Xavier Glorot 认为：优秀的初始化应该使得各层的激活值和状态梯度在传播过程中的方差保持一致。即方差一致性。
+
+最终推导结果是：
+\begin{itemize}
+    \item sigmoid：\(V(w^{[l]}) = \frac{2}{n^{[l]}}\)。
+    \item tanh：\(V(w^{[l]}) = \frac{2}{n^{[l]} + n^{[l-1]}}\)，对应xavier uniform。
+    \item ReLU：\(V(w^{[l]}) = \frac{2}{n^{[l-1]}}\)，对应Kaiming uniform。
+    \item ReLU的变种：\(V(w^{[l]}) = \frac{2}{(1 + α^2)n^{[l-1]}}\)
+\end{itemize}
+
+\section{梯度的数值逼近}
+% Numerical approximation of gradients
+
+\section{梯度检验}
+% Gradient checking
+
+\section{梯度检验应用的注意事项}
+% Gradient Checking Implementation Notes
+
+\end{document}

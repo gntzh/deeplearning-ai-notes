@@ -1,0 +1,85 @@
+\PassOptionsToPackage{CJKmath}{xeCJK}
+\usepackage[
+  fontset=none,
+  heading=true,
+]{ctex}
+\usepackage{xcolor}
+%%%%%%%%%% Color theme %%%%%%%%%%
+\definecolor{structure}{RGB}{31,186,190}
+\definecolor{main}{RGB}{59,180,5}
+\definecolor{second}{RGB}{175,153,8}
+\definecolor{third}{RGB}{244,105,102}
+\definecolor{success}{HTML}{42b983}
+\definecolor{info}{HTML}{3399ff}
+\definecolor{warning}{HTML}{e7c000}
+\definecolor{danger}{HTML}{cc0000}
+\definecolor{spot}{rgb}{0,0.2,0.6}
+\providecommand{\refname}{参考文献}
+\PassOptionsToPackage{outputdir=out}{minted}
+\PassOptionsToPackage{style=gb7714-2015,arxiv=pdf}{biblatex}
+\usepackage{./styles}
+\graphicspath{{./img}}
+\setmathfont{Cambria Math}
+\setlist{nosep}
+\usepackage{float}
+\usepackage{fancyhdr}
+\usepackage{pgfplots}
+\pgfplotsset{compat=newest}
+\usepackage{schemata}
+\usepackage{makeidx}
+\usepackage[lined,boxed]{algorithm2e}
+%%%%%%%%%% 页面布局 %%%%%%%%%%
+\geometry{a4paper,hmargin=3.18cm,vmargin=2.54cm}
+%%%%%%%%%% Font %%%%%%%%%%
+\setmainfont{IBM Plex Serif}
+\setsansfont{IBM Plex Sans}
+\setmonofont{IBM Plex Mono}
+\setmathfont{Cambria Math}
+\setCJKmainfont{Source Han Serif SC}[
+  UprightFont = *-Regular,
+  BoldFont = *-Bold,
+  ItalicFont = 方正楷体简体,
+  BoldItalicFont = 方正楷体简体,
+]
+\setCJKsansfont{Source Han Sans SC}[
+  UprightFont = *-Regular,
+  BoldFont = *-Bold,
+  ItalicFont = 方正楷体简体,
+  BoldItalicFont = 方正楷体简体,
+]
+
+% 公式间距
+\AtBeginDocument{% 设置在这里或者\normalsize有效
+  \setlength{\abovedisplayskip}{5pt}
+  \setlength{\belowdisplayskip}{5pt}
+  \setlength{\abovedisplayshortskip}{3pt}
+  \setlength{\belowdisplayshortskip}{3pt}
+}
+\usepackage{tikz}
+\usetikzlibrary{calc,arrows.meta,positioning,decorations.pathreplacing,matrix}
+\usetikzlibrary{external}
+\tikzexternalize[prefix=out/tikz/,optimize command away=\includepdf]
+\tcbset{shield externalize}
+\tikzset{
+  neuron/.style={
+      thick,
+      circle,
+      minimum size=6mm,
+      inner sep=0.05em,
+      draw=#1,
+    },
+  neuron/.default=black,
+}
+%%%%%%%%%% AtEndPreamble %%%%%%%%%%
+\usepackage{subfiles}
+\usepackage{xpatch}
+\xpatchcmd{\inputminted}{#3}{\import@path#3}{}{}
+\addbibresource{\subfix{references.bib}}
+\usepackage{bookmark}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=spot,
+  urlcolor=spot,
+  bookmarksnumbered=true,
+  pdfstartview=FitH,
+}
